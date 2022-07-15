@@ -1,9 +1,13 @@
+import GitHubIcon from "@mui/icons-material/GitHub";
 import { Button, Grid, Stack, Toolbar, Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import React from "react";
-import { Img } from "../Header";
+import css from "../../assets/imgs/css.png";
+import html from "../../assets/imgs/html.png";
+import js from "../../assets/imgs/js.png";
+import realMe from "../../assets/imgs/me.png";
 import me from "../../assets/imgs/megif.gif";
-import GitHubIcon from "@mui/icons-material/GitHub";
+import { Img } from "../Header";
 export default function Home() {
   return (
     <Container
@@ -28,7 +32,7 @@ export default function Home() {
           }}
         >
           <Typography sx={classes.text}>Hi, I Am</Typography>
-          <Typography sx={{ ...classes.text, color: "primary.main" }}>
+          <Typography sx={{ ...classes.text, color: "primary.main", mb: 3 }}>
             Ayoub Faragi
           </Typography>
           <Typography sx={classes.desc}>
@@ -75,7 +79,31 @@ export default function Home() {
             flexDirection: "column",
           }}
         >
-          <Img src={me} sx={classes.me} />
+          <Box
+            sx={{
+              position: "relative",
+              justifyContent: "center",
+              display: "flex",
+            }}
+          >
+            <Img src={realMe} sx={classes.realMe} />
+            <Img src={me} sx={classes.me} className="load" />
+            <Img
+              src={css}
+              sx={{ ...classes.langue, ...classes.topRight }}
+              className="moveit"
+            />
+            <Img
+              src={html}
+              sx={{ ...classes.langue, ...classes.topleftMid }}
+              className="moveit"
+            />
+            <Img
+              src={js}
+              sx={{ ...classes.langue, ...classes.bottomMid }}
+              className="moveit"
+            />
+          </Box>
         </Grid>
       </Grid>
     </Container>
@@ -90,7 +118,7 @@ const classes = {
     // color: "blue.main",
     whiteSpace: "pre",
     lineHeight: 1,
-    mb: 3,
+    // mb: 3,
   },
   desc: {
     fontFamily: "'Baloo 2', cursive",
@@ -116,5 +144,31 @@ const classes = {
     borderRadius: "50%",
     objectFit: "contain",
     mt: 1,
+  },
+  realMe: {
+    width: "90%",
+    height: "auto",
+    borderRadius: "50%",
+    objectFit: "contain",
+    mt: 1,
+    position:"absolute"
+  },
+  langue: {
+    width: "50px",
+    height: "auto",
+    objectFit: "contain",
+    position: "absolute",
+  },
+  topRight: {
+    top: "3%",
+    right: "22%",
+  },
+  bottomMid: {
+    bottom: "17%",
+    right: "9%",
+  },
+  topleftMid: {
+    top: "25%",
+    left: "3%",
   },
 };
