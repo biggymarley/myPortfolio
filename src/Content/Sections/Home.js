@@ -56,6 +56,8 @@ export default function Home() {
               Hire Me
             </Button>
             <Button
+              href={"https://github.com/biggymarley"}
+              target="_blank"
               sx={{
                 fontFamily: "'Baloo 2', cursive",
                 fontSize: "2vh",
@@ -151,7 +153,7 @@ const classes = {
     borderRadius: "50%",
     objectFit: "contain",
     mt: 1,
-    position:"absolute"
+    position: "absolute",
   },
   langue: {
     width: "50px",
