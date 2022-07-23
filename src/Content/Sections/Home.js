@@ -7,6 +7,7 @@ import html from "../../assets/imgs/html.png";
 import js from "../../assets/imgs/js.png";
 import realMe from "../../assets/imgs/me.png";
 import me from "../../assets/imgs/megif.gif";
+import Ball3d from "../Ball3d";
 import { Img } from "../Header";
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       maxWidth="lg"
     >
       <Toolbar />
+
       <Grid container sx={{ flexGrow: 1 }} spacing={4}>
         <Grid
           item
@@ -86,10 +88,11 @@ export default function Home() {
               position: "relative",
               justifyContent: "center",
               display: "flex",
+              // p: 10
             }}
           >
             <Img src={realMe} sx={classes.realMe} />
-            <Img src={me} sx={classes.me} className="load" />
+            {/* <Img src={me} sx={classes.me} className="load" /> */}
             <Img
               src={css}
               sx={{ ...classes.langue, ...classes.topRight }}
@@ -153,7 +156,7 @@ const classes = {
     borderRadius: "50%",
     objectFit: "contain",
     mt: 1,
-    position: "absolute",
+    // position: "absolute",
   },
   langue: {
     width: "50px",

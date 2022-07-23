@@ -3,6 +3,7 @@ import React from "react";
 import logo1337 from "../../assets/imgs/1337.png";
 import education from "../../assets/imgs/education.png";
 import ofppt from "../../assets/imgs/ofppt.png";
+import Ball3d from "../Ball3d";
 import { Img } from "../Header";
 
 const Line = styled("div")(
@@ -16,12 +17,14 @@ export default function Education() {
         // height: "100vh",
         display: "flex",
         flexDirection: "column",
+        position: "relative",
         // userSelect: "none",
       }}
       maxWidth="lg"
     >
       <Toolbar />
-      <Stack direction={"column"} spacing={1}>
+
+      <Stack direction={"column"} spacing={1} sx={{zIndex:99, userSelect:"none"}}>
         <Stack
           direction={"row"}
           spacing={2}
@@ -47,6 +50,8 @@ export default function Education() {
           <RoadMaker content={content} key={index} />
         ))}
       </Stack>
+      {/* <Ball3d /> */}
+
     </Container>
   );
 }
@@ -70,8 +75,13 @@ const RoadMaker = ({ content }) => {
         <Typography sx={classes.desc}>{content.desc}</Typography>
       </Stack>
       {content.logo ? (
-        <a href={content.link} target="_blank" style={{ alignSelf: "center" }} rel="noreferrer" >
-          <Img src={content.logo} sx={classes.logo} rel="noreferrer"/>
+        <a
+          href={content.link}
+          target="_blank"
+          style={{ alignSelf: "center" }}
+          rel="noreferrer"
+        >
+          <Img src={content.logo} sx={classes.logo} rel="noreferrer" />
         </a>
       ) : null}
     </Stack>
