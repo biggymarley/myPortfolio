@@ -1,9 +1,9 @@
 {
   "files": {
     "main.css": "/myPortfolio/static/css/main.c882a4b4.css",
-    "main.js": "/myPortfolio/static/js/main.d80e5742.js",
+    "main.js": "/myPortfolio/static/js/main.e9e98a13.js",
     "static/css/789.50ba2db3.chunk.css": "/myPortfolio/static/css/789.50ba2db3.chunk.css",
-    "static/js/789.ce139b66.chunk.js": "/myPortfolio/static/js/789.ce139b66.chunk.js",
+    "static/js/789.2e6fb519.chunk.js": "/myPortfolio/static/js/789.2e6fb519.chunk.js",
     "static/js/787.1ed0c42c.chunk.js": "/myPortfolio/static/js/787.1ed0c42c.chunk.js",
     "static/js/318.d4514c63.chunk.js": "/myPortfolio/static/js/318.d4514c63.chunk.js",
     "static/media/camagru.png": "/myPortfolio/static/media/camagru.5fd0f32f2851bc8dcb93.png",
@@ -74,14 +74,14 @@
     "static/media/ls.jpg": "/myPortfolio/static/media/ls.e317b1378ac44439ae2e.jpg",
     "index.html": "/myPortfolio/index.html",
     "main.c882a4b4.css.map": "/myPortfolio/static/css/main.c882a4b4.css.map",
-    "main.d80e5742.js.map": "/myPortfolio/static/js/main.d80e5742.js.map",
+    "main.e9e98a13.js.map": "/myPortfolio/static/js/main.e9e98a13.js.map",
     "789.50ba2db3.chunk.css.map": "/myPortfolio/static/css/789.50ba2db3.chunk.css.map",
-    "789.ce139b66.chunk.js.map": "/myPortfolio/static/js/789.ce139b66.chunk.js.map",
+    "789.2e6fb519.chunk.js.map": "/myPortfolio/static/js/789.2e6fb519.chunk.js.map",
     "787.1ed0c42c.chunk.js.map": "/myPortfolio/static/js/787.1ed0c42c.chunk.js.map",
     "318.d4514c63.chunk.js.map": "/myPortfolio/static/js/318.d4514c63.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c882a4b4.css",
-    "static/js/main.d80e5742.js"
+    "static/js/main.e9e98a13.js"
   ]
 }
