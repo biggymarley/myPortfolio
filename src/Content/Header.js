@@ -14,7 +14,7 @@ import { styled } from "@mui/system";
 import PropTypes from "prop-types";
 import * as React from "react";
 import logo from "../assets/imgs/logo.png";
-const pages = ["Home", "About", "Portfolio"];
+const pages = [{label: "Home", id:'#Home'}, {label: "Education", id:'#Education'}, {label: "Work", id:'#Work'}];
 export const Img = styled("img")("");
 
 function HideOnScroll(props) {
@@ -24,7 +24,7 @@ function HideOnScroll(props) {
   // This is only being set here because the demo is in an iframe.
   const trigger = useScrollTrigger({
     target: window ? window() : undefined,
-    threshold:50
+    threshold: 50,
   });
 
   return (
@@ -100,9 +100,9 @@ const Header = () => {
                   display: { xs: "block", md: "none" },
                 }}
               >
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
+                {pages.map((page, index) => (
+                  <MenuItem key={index} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{page.label}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
@@ -129,35 +129,39 @@ const Header = () => {
               }}
             >
               {pages.map((page) => (
-                <Button
-                  key={page}
-                  disableRipple
-                  onClick={handleCloseNavMenu}
-                  sx={{
-                    mx: 5,
-                    my: 2,
-                    color: "secondary.main",
-                    display: "block",
-                    fontFamily: "'Signika', sans-serif",
-                    fontWeight: 600,
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {page}
-                </Button>
+                <a href={page.id} style={{ textDecoration: "none" }}>
+                  <Button
+                    key={page}
+                    disableRipple
+                    onClick={handleCloseNavMenu}
+                    sx={{
+                      mx: 5,
+                      my: 2,
+                      color: "secondary.main",
+                      display: "block",
+                      fontFamily: "'Signika', sans-serif",
+                      fontWeight: 600,
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {page.label}
+                  </Button>
+                </a>
               ))}
             </Box>
-            <Button
-              variant="outlined"
-              color="primary"
-              sx={{
-                borderRadius: "12em",
-                fontFamily: "'Signika', sans-serif",
-                fontWeight: 600,
-              }}
-            >
-              Contact me
-            </Button>
+            <a href="#contactMe" style={{ textDecoration: "none" }}>
+              <Button
+                variant="outlined"
+                color="primary"
+                sx={{
+                  borderRadius: "12em",
+                  fontFamily: "'Signika', sans-serif",
+                  fontWeight: 600,
+                }}
+              >
+                Contact me
+              </Button>
+            </a>
           </Toolbar>
         </Container>
       </AppBar>

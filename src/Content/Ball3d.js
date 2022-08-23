@@ -1,381 +1,325 @@
-import { Modal } from "@mui/material";
+import {
+  Physics,
+  useBox,
+  useConvexPolyhedron,
+  useCylinder,
+  usePlane,
+  useSphere,
+} from "@react-three/cannon";
 import {
   Environment,
-  GradientTexture,
   MeshDistortMaterial,
   OrbitControls,
-  Plane,
-  Sphere,
-  SpotLight,
-  Text,
-  useDepthBuffer,
-  useHelper,
   useTexture,
 } from "@react-three/drei";
-import { Canvas, useFrame, extend } from "@react-three/fiber";
-import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
-import * as THREE from "three";
 import {
-  DirectionalLightHelper,
-  MeshPhongMaterial,
-  PointLightHelper,
-} from "three";
+  Canvas,
+  extend,
+  useFrame,
+  useLoader,
+  useThree,
+} from "@react-three/fiber";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useSpring } from "react-spring";
+import * as THREE from "three";
+import { ConeGeometry, Mesh } from "three";
+import { Geometry } from "three-stdlib/deprecated/Geometry";
+import { GLTFLoader } from "three-stdlib/loaders/GLTFLoader";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
-import font from "../assets/fonts/Overpass-Black.ttf";
-import JsonFont from "../assets/fonts/Overpass.json";
-import ao from "../assets/imgs/texture/ao.jpg";
-import arm from "../assets/imgs/texture/arm.jpg";
-import map from "../assets/imgs/texture/diff.jpg";
-import disp from "../assets/imgs/texture/disp.jpg";
-import normal from "../assets/imgs/texture/normal.jpg";
-import roughnessmap from "../assets/imgs/texture/roughness.jpg";
-import Model from "./Model";
+import Myfont from "../assets/fonts/OverpassJson.json";
+
 const fontProps = {
-  font: font,
-  fontSize: 0.6,
-  height: 5,
-  size: 50,
-  // letterSpacing: -0.05,
-  lineHeight: 1,
-  color: "black",
-  castShadow: true,
-  // receiveShadow: true,
-  outlineWidth: 0.1,
-  outlineColor: "#fff",
-  "material-toneMapped": false,
+  curveSegments: 12,
+  bevelEnabled: true,
+  bevelThickness: 80,
+  bevelSize: 90,
+  bevelOffset: 90,
+  bevelSegments: 90,
 };
 
-export default function Ball3d() {
-  // const map = useLoader(TextureLoader, texture);
+function toConvexProps(bufferGeometry) {
+  const geo = new Geometry().fromBufferGeometry(bufferGeometry);
+  geo.mergeVertices();
+  return [
+    geo.vertices.map((v) => [v.x, v.y, v.z]),
+    geo.faces.map((f) => [f.a, f.b, f.c]),
+    [],
+  ];
+}
+
+function Diamond({ position, rotation }) {
+  const {
+    nodes: {
+      Cylinder: { geometry },
+    },
+  } = useLoader(GLTFLoader, "/myPortfolio/diamond.glb");
+  const args = useMemo(() => toConvexProps(geometry), [geometry]);
+  const [ref, api] = useConvexPolyhedron(
+    () => ({ args, mass: 100, position, rotation, type: "Static" }),
+    useRef < Mesh > null
+  );
+
+  useFrame(({ clock, mouse }) => {
+    api.rotation.set(0, clock.getElapsedTime(), 0);
+    api.position.set(position[0] - mouse.y *.2, position[1] - mouse.x *.2, position[2]);
+  });
 
   return (
-    <Canvas
-      // dpr={[1, 2]}
-      shadows={true}
-      camera={{ position: [0, 0, 35], fov: 35 }}
-      style={{
-        // display:'flex',
-        width: "100%",
-        height: "80vh",
-      }}
-    >
-      <Suspense fallback={null}>
-        {/* <hemisphereLight intensity={.4} /> */}
-
-        {/* <OrbitControls enableZoom={false} /> */}
-        {/* <Environment
-          files={"myPortfolio/studio.hdr"}
-          // background
-          near={1}
-          far={2}
-          resolution={256}
-        /> */}
-        <Ball />
-      </Suspense>
-      {/* </mesh> */}
-    </Canvas>
+    <mesh castShadow receiveShadow {...{ geometry, position, ref, rotation }}>
+      <meshStandardMaterial color="#7A59F9" roughness={0} thickness={0} />
+      <TextHanadler position={[-1, 1, 0]} label={"THREEJS"} color={"#7A59F9"} />
+    </mesh>
   );
 }
 
-const Ball = () => {
-  // const maping = useLoader(TextureLoader, "../assets/imgs/texture/diff.jpg");
-  extend({ TextGeometry });
-  const JsFont = new FontLoader().parse(JsonFont);
-  const texturemaps = useTexture({
-    map: map,
-    displacementMap: disp,
-    aoMap: ao,
-    roughnessMap: roughnessmap,
-    metalnessMap: arm,
-    normalMap: normal,
-  });
-  const ref = useRef();
-  const Js = useRef();
-  const RHTML = useRef();
-  const RCSS = useRef();
-  const r = useRef();
-  const rn = useRef();
-  const figma = useRef();
-  const threejs = useRef();
-
-  const [position, setposition] = useState(0);
-  const [storedClock, setclock] = useState(1);
-  const [rate, setrate] = useState(0.0023);
-  const [active, setActive] = useState(false);
-  const [hover, setHover] = useState(false);
-  const localPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0.8);
-  useFrame(({ clock }) => {
-    threejs.current.rotation.y = clock.getElapsedTime() * 2;
-    Js.current.rotation.y = clock.getElapsedTime() * 2;
-    RHTML.current.rotation.y = clock.getElapsedTime() * 1.2;
-    RCSS.current.rotation.y = clock.getElapsedTime() * 2;
-    r.current.rotation.y = clock.getElapsedTime() * 3;
-    rn.current.rotation.y = clock.getElapsedTime() * 2.5;
-    figma.current.rotation.y = clock.getElapsedTime();
-    if (active) {
-      ref.current.rotation.y = rate > 0 ? position + rate : position;
-      setposition(rate > 0 ? position + rate : position);
-      setrate(rate > 0 ? rate - 0.00001 : 0);
-      return;
-    } else ref.current.rotation.y = position;
-    setrate(rate >= 0.0023 ? 0.0023 : rate + 0.00001);
-    setposition(position + rate);
+function Cone({ position, rotation, sides, scale, label, color, textPos }) {
+  const geometry = new ConeGeometry(1, 1, sides, 1);
+  const args = useMemo(() => toConvexProps(geometry), [geometry]);
+  const [ref, api] = useConvexPolyhedron(
+    () => ({ args, mass: 100, position, rotation, type: "Static" }),
+    useRef < Mesh > null
+  );
+  useFrame(({ clock , mouse}) => {
+    api.rotation.set(0, -clock.getElapsedTime(), 0);
+    api.position.set(position[0] - mouse.y *.2, position[1] - mouse.x *.2, position[2]);
   });
 
-  const plight = useRef();
-  // useHelper(plight, PointLightHelper, 0.5, "hotpink");
-  const depthBuffer = useDepthBuffer({ size: 56 });
   return (
-    <>
-
-      <directionalLight
-        position={[1, 2, 0]}
-        intensity={1}
-        castShadow
-        shadow-mapSize-width={2000}
-        shadow-mapSize-height={2000}
-        shadow-camera-far={2000}
-        shadow-camera-left={-100}
-        shadow-camera-right={100}
-        shadow-camera-top={100}
-        shadow-camera-bottom={-100}
-        color={"#ffffff"}
+    <mesh
+      castShadow
+      receiveShadow
+      {...{ geometry, position, ref, rotation }}
+      scale={scale}
+    >
+      <coneBufferGeometry args={[1, 1, sides, 1]} />
+      <meshPhysicalMaterial
+        roughness={0}
+        thickness={0.5}
+        side={THREE.DoubleSide}
+        color={color}
       />
-      <ambientLight intensity={0.2} />
-      <pointLight
-        position={[8, 7.5, -2]}
-        intensity={2}
-        color="#fad16b"
-        ref={plight}
-        castShadow={true}
+      <TextHanadler position={[textPos, 1.2, 0]} label={label} color={color} />
+    </mesh>
+  );
+}
+const TextHanadler = ({ label, cube, position, rotation, color }) => {
+  extend({ TextGeometry });
+  const font = new FontLoader().parse(Myfont);
+
+  return (
+    <mesh
+      position={position}
+      scale={0.15}
+      rotation={rotation ? rotation : [0, 0, 0]}
+      castShadow
+      ref={cube}
+    >
+      <textGeometry
+        args={[label, { font, size: 2, height: 0.5 }]}
+        textAlign="center"
+        
+        {...fontProps}
       />
-      <mesh
-        ref={ref}
-        onClick={() => {
-          setActive(!active);
-        }}
-        // onPointerOver={() => {
-        //   setHover(true);
-        //   document.body.style.cursor = "pointer";
-        // }}
-        // onPointerOut={() => {
-        //   setHover(false);
-        //   document.body.style.cursor = "auto";
-        // }}
-      >
-        <Sphere
-          visible
-          args={[1.6, 50, 30]}
-          scale={0.7}
-          position={[0, -5, -15]}
-          castShadow
-          receiveShadow
-          ref={Js}
-        >
-          <MeshDistortMaterial
-            attach={"material"}
-            color="#F7DF1E"
-            distort={0.3}
-            roughness={0}
-          />
-          <Text
-            {...fontProps}
-            color="#857501"
-            position={[0, 0, -2]}
-            rotation={[0, 9.5, 0]}
-          >
-            JavaScript
-          </Text>
-        </Sphere>
-        <Sphere
-          visible
-          ref={rn}
-          args={[1.6, 50, 30]}
-          scale={0.7}
-          position={[-10, -5, 0]}
-          rotation={[0, 1.5, 0]}
-          castShadow
-          receiveShadow
-        >
-          <MeshDistortMaterial
-            attach={"material"}
-            color="#60D7F8"
-            distort={0.3}
-            roughness={0}
-          />
-          <Text
-            {...fontProps}
-            color="#017291"
-            position={[0, 0, -2]}
-            rotation={[0, 9.5, 0]}
-          >
-            ReactNative
-          </Text>
-        </Sphere>
-        <Sphere
-          visible
-          args={[1.6, 50, 30]}
-          scale={0.7}
-          position={[-20, 2, 0]}
-          rotation={[0, 1.5, 0]}
-          castShadow
-          receiveShadow
-          ref={r}
-        >
-          <MeshDistortMaterial
-            attach={"material"}
-            color="rgb(0, 127, 255)"
-            distort={0.3}
-            roughness={0}
-          />
-          <Text
-            {...fontProps}
-            color="#00458a"
-            position={[0, 0, -2]}
-            rotation={[0, 9.5, 0]}
-          >
-            REACTJS
-          </Text>
-        </Sphere>
-        <Sphere
-          visible
-          args={[1.6, 50, 30]}
-          scale={0.7}
-          position={[10, 4, 0]}
-          rotation={[0, 4.7, 0]}
-          ref={figma}
-          castShadow
-          receiveShadow
-        >
-          <MeshDistortMaterial
-            attach={"material"}
-            color="#A259FF"
-            distort={0.3}
-            roughness={0}
-          />
-          <Text
-            {...fontProps}
-            color={"#5704c2"}
-            position={[0, 0, -2]}
-            rotation={[0, 9.5, 0]}
-          >
-            FIGMA
-          </Text>
-        </Sphere>
-        <Sphere
-          visible
-          args={[1.6, 50, 30]}
-          scale={0.7}
-          position={[10, 0, 5]}
-          rotation={[0, 4.1, 0]}
-          ref={RHTML}
-          castShadow
-          receiveShadow
-        >
-          <MeshDistortMaterial
-            distort={0.4}
-            color="#e54c21"
-            attach={"material"}
-            roughness={0}
-          />
 
-          <Text
-            {...fontProps}
-            position={[0, 0, -2]}
-            rotation={[0, 9.5, 0]}
-            castShadow
-            receiveShadow
-            color={"#9c2200"}
-          >
-            HTML5
-          </Text>
-        </Sphere>
-        <Sphere
-          visible
-          args={[1.6, 50, 30]}
-          scale={0.5}
-          position={[13, -2, 5]}
-          rotation={[0, 4.1, 0]}
-          ref={RCSS}
-          castShadow
-          receiveShadow
-        >
-          <MeshDistortMaterial
-            distort={0.4}
-            color="#27A0D4"
-            attach={"material"}
-            roughness={0}
-          />
+      <meshPhysicalMaterial
+        transmission={0}
+        roughness={0.7}
+        thickness={1}
+        color={color}
+      />
+    </mesh>
+  );
+};
 
-          <Text
-            {...fontProps}
-            position={[0, 0, -2]}
-            rotation={[0, 9.5, 0]}
-            castShadow
-            color={"#005275"}
-            receiveShadow
-          >
-            CSS3
-          </Text>
-        </Sphere>
-        <Sphere
-          visible
-          args={[1.6, 50, 30]}
-          scale={0.7}
-          position={[-10, 4, 0]}
-          rotation={[0, 4.7, 0]}
-          ref={threejs}
-          castShadow
-          receiveShadow
-        >
-          <MeshDistortMaterial
-            attach={"material"}
-            color="#7A59F9"
-            distort={0.3}
-            roughness={0}
-          />
-          <Text
-            {...fontProps}
-            color={"#2d09b5"}
-            position={[0, 0, -2]}
-            rotation={[0, 9.5, 0]}
-          >
-            THREEJS
-          </Text>
-        </Sphere>
-        {/* <Sphere visible args={[2, 100, 100]} scale={4} castShadow receiveShadow>
-      
-        <meshPhysicalMaterial transmission={1} roughness={0} thickness={1} />
-      </Sphere> */}
-      </mesh>
-      {/* <Plane
-        args={[50, 50, 128, 128]}
-        position={[0, -7.9, 0]}
-        rotation={[4.72, 0, 0]}
-        receiveShadow={true}
-      >
-        <meshStandardMaterial {...texturemaps} roughness={1}  />
-      </Plane> */}
-      <mesh
-        position={[0, -7, 0]}
-        castShadow
-        receiveShadow
-        scale={10}
-        onClick={() => {
-          setActive(!active);
-        }}
-        // onPointerOver={() => {
-        //   setHover(true);
-        //   document.body.style.cursor = "pointer";
-        // }}
-        // onPointerOut={() => {
-        //   setHover(false);
-        //   document.body.style.cursor = "auto";
-        // }}
-      >
-        <Model />
-      </mesh>
-    </>
+function Pillar(props) {
+  const args = [2, 0, 2, 160, 20, false];
+  const [ref] = useCylinder(
+    () => ({
+      args,
+      mass: 10,
+      type: "Static",
+      ...props,
+    }),
+    useRef < Mesh > null
+  );
+  return (
+    <mesh ref={ref} castShadow scale={0.5}>
+      <cylinderBufferGeometry args={args} />
+      <MeshDistortMaterial
+        color={"black"}
+        transmission={0.8}
+        distort={0}
+        roughness={0.5}
+        thickness={0.5}
+      />
+    </mesh>
+  );
+}
+
+function Cube({ position, rotation, size }) {
+  const [ref, api] = useBox(
+    () => ({ mass: 100, position, rotation, type: "Static" }),
+    useRef < Mesh > null
+  );
+  useFrame(({ clock, mouse }) => {
+    api.rotation.set(0, -clock.getElapsedTime(), 0);
+    api.position.set(position[0] - mouse.y *.2, position[1] - mouse.x *.2, position[2]);
+  });
+
+  return (
+    <mesh castShadow receiveShadow {...{ position, ref, rotation }}>
+      <boxBufferGeometry args={[1, 1, 1]} />
+      <meshPhysicalMaterial
+        roughness={0.7}
+        thickness={1}
+        side={THREE.DoubleSide}
+        color="#D61C4E"
+      />
+      <TextHanadler
+        position={[-0.65, 0.7, 0]}
+        rotation={[Math.PI, -Math.PI, Math.PI]}
+        label={"FIGMA"}
+        color="#D61C4E"
+      />
+    </mesh>
+  );
+}
+extend({ TextGeometry });
+const font = new FontLoader().parse(Myfont);
+
+const SphereObj = ({ distort, position, label, textPos, color }) => {
+  const [ref, api] = useSphere((index) => ({
+    args: [1],
+    mass: 50,
+    type: "Static",
+    position,
+  }));
+
+  useFrame(({ clock, mouse }) => {
+    api.rotation.set(0, clock.getElapsedTime(), 0);
+    api.position.set(position[0] - mouse.y *.2, position[1] - mouse.x *.2, position[2]);
+
+  });
+
+  return (
+    <mesh ref={ref} castShadow receiveShadow args={[undefined, undefined, 100]}>
+      <sphereBufferGeometry
+        attach={"geometry"}
+        args={[1, 32, 32]}
+      ></sphereBufferGeometry>
+      <MeshDistortMaterial
+        color={color}
+        transmission={0}
+        distort={distort ? distort : 0}
+        roughness={0.5}
+        thickness={1}
+        reflectivity={0}
+      />
+      <TextHanadler position={[textPos, 1.2, 0]} label={label} color={color} />
+    </mesh>
+  );
+};
+
+export default () => {
+  const [scroll, setscroll] = useState(0);
+  const [isVisible, setisVisible] = useState(false);
+
+
+
+  return (
+    <div
+      style={{
+        height: "80vh",
+        width: "100%",
+        // position:"absolute",
+        // bottom: "-40vh"
+        // zIndex: -1,
+
+      }}
+    >
+      <Canvas shadows gl={{ alpha: true }} camera={{ position: [-6, 1, -2] }}>
+        {/* <OrbitControls enableZoom={false} enablePan={false} /> */}
+        <Environment
+          files={"/myPortfolio/studio.hdr"}
+          // background
+          near={1}
+          far={50}
+          resolution={50}
+        />
+        <hemisphereLight intensity={0.35} />
+        {/* <spotLight
+      position={[0, 2, 0]}
+      color={"yellow"}
+      angle={0.3}
+      penumbra={1}
+      intensity={4}
+      castShadow
+      shadow-mapSize-width={256}
+      shadow-mapSize-height={256}
+    /> */}
+        {/* <OrbitControls /> */}
+        <pointLight position={[0, 2, 0]} color={"yellow"} intensity={1} />
+        {/* <OrbitControls /> */}
+        <Physics gravity={[0, 0, -30]}>
+          <Elements3d scroll={scroll} isVisible={isVisible} />
+        </Physics>
+      </Canvas>
+     
+    </div>
+  );
+};
+
+const Elements3d = ({ scroll, isVisible }) => {
+  const group = useRef();
+  const { viewport } = useThree();
+
+
+
+  return (
+    <group ref={group} position={[0, 0, 0]}>
+      <Cube position={[-2, 0, 2]} rotation={[0.5, 0.4, -1]} size={0.4} />
+      <SphereObj
+        position={[4, -1, 4]}
+        label={"React Native"}
+        textPos={-1.2}
+        color="#6CC4A1"
+      />
+      <Cone
+        position={[3, 0, 0]}
+        rotation={[0.1, 0.2, 0]}
+        sides={4}
+        scale={0.9}
+        label={"CSS"}
+        textPos={-0.4}
+        color="#27A0D4"
+      />
+      <Cone
+        position={[5, 0, 0]}
+        rotation={[0.1, 0.2, 0]}
+        sides={4}
+        scale={1}
+        label={"HTML"}
+        textPos={-0.5}
+        color="#e54c21"
+      />
+      <Cone
+        position={[6, 0, -1]}
+        rotation={[0.1, 0.2, 0]}
+        sides={4}
+        scale={0.4}
+        label={"JavaScript"}
+        textPos={-1}
+        color="#F7DF1E"
+      />
+      <SphereObj
+        distort={0.4}
+        position={[0, 0, -3]}
+        label={"ReactJS"}
+        textPos={-0.8}
+        color={"#27A0D4"}
+      />
+      <Diamond position={[-3, -1, 0]} />
+    </group>
   );
 };

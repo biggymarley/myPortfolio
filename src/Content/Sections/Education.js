@@ -3,7 +3,6 @@ import React from "react";
 import logo1337 from "../../assets/imgs/1337.png";
 import education from "../../assets/imgs/education.png";
 import ofppt from "../../assets/imgs/ofppt.png";
-import Ball3d from "../Ball3d";
 import { Img } from "../Header";
 
 const Line = styled("div")(
@@ -13,6 +12,7 @@ const Line = styled("div")(
 export default function Education() {
   return (
     <Container
+      id="Education"
       sx={{
         // height: "100vh",
         display: "flex",
@@ -24,19 +24,24 @@ export default function Education() {
     >
       <Toolbar />
 
-      <Stack direction={"column"} spacing={1} sx={{zIndex:99, userSelect:"none"}}>
+      <Stack
+        direction={"column"}
+        spacing={1}
+        sx={{ zIndex: 99, position: "relative" }}
+      >
         <Stack
           direction={"row"}
           spacing={2}
           sx={{ mb: 3 }}
           alignItems="center"
           justifyContent={"center"}
+          data-aos="fade-up"
         >
-          {/* <SchoolOutlinedIcon color="primary" sx={{ fontSize: "4vh" }} /> */}
           <Typography sx={classes.title}>Education</Typography>
         </Stack>
         <Img
           src={education}
+          data-aos="fade-left"
           className="moveit"
           sx={{
             position: "absolute",
@@ -47,18 +52,33 @@ export default function Education() {
           }}
         />
         {contents.map((content, index) => (
-          <RoadMaker content={content} key={index} />
+          <RoadMaker content={content} key={index} index={index} />
         ))}
       </Stack>
       {/* <Ball3d /> */}
-
     </Container>
   );
 }
 
-const RoadMaker = ({ content }) => {
+const RoadMaker = ({ content, index }) => {
   return (
-    <Stack direction={"row"} spacing={2}>
+    <Stack
+      data-aos-duration={index * 1000}
+      data-aos="fade-up"
+      direction={"row"}
+      spacing={2}
+      sx={{
+        p: 2,
+        mt: "2rem !important",
+        background: "rgba(255, 255, 255, 0.2)",
+        borderRadius: "16px",
+        boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+        backdropFilter: "blur(5px)",
+        WebkitBackdropFilter: "blur(5px)",
+        border: "1px solid rgba(255, 255, 255, 0.3)",
+       
+      }}
+    >
       <Stack justifyContent={"space-between"}>
         <Typography sx={{ ...classes.date }}>{content.date}</Typography>
         {content.present ? (

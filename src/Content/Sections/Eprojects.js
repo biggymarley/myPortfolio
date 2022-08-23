@@ -1,27 +1,74 @@
 import GitHubIcon from "@mui/icons-material/GitHub";
 import InsertLinkRoundedIcon from "@mui/icons-material/InsertLinkRounded";
-import { Grid, Stack, Toolbar, Typography } from "@mui/material";
+import { Grid, Toolbar, Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import React from "react";
 
-// import eprojects from "../../assets/imgs/eprojects.png";
+import eprojects from "../../assets/imgs/eprojects.png";
+import ImageHandler from "../3dContent/ImageHandler";
+import Ball3d from "../Ball3d";
 import { Img } from "../Header";
 import EpFrame from "./EpFrame";
-export default function Eprojects({ content, title }) {
+export default function Eprojects({ content, title, with3d, withImg, id }) {
   return (
     <Container
+      id={id}
       sx={{
         // height: "100vh",
         display: "flex",
         flexDirection: "column",
         // userSelect: "none",
+        position: "relative",
       }}
       maxWidth="lg"
     >
       <Toolbar />
-      <Typography sx={classes.title}>{title}</Typography>
-      {/* <Img src={eprojects} className="moveit" sx={classes.eprojects} /> */}
-      <GridFactory content={content} />
+      <Typography data-aos="fade-up" sx={classes.title}>
+        {title}
+      </Typography>
+      {with3d ? (
+        <Box
+          sx={{
+            position: "absolute",
+            width: "100%",
+            left: {xs: "30%", md: "40%"},
+            bottom: {xs: 0 , md: "-20%"},
+            top: {xs: "-3%" , md: "auto"},
+            // right: {xs: "50%" , md: "auto"},
+
+            height: "80vh",
+            overflow: "hidden",
+            zIndex: -1,
+          }}
+        >
+          <Ball3d />
+        </Box>
+      ) : null}
+      {withImg ? (
+        <Img
+          src={eprojects}
+          className="moveit"
+          sx={classes.eprojects}
+          data-aos="zoom-in"
+        />
+      ) : null}
+
+      <Box
+        data-aos="zoom-in"
+        sx={{
+          display: "flex",
+          p: 4,
+          pb: 6,
+          background: "rgba(255, 255, 255, 0.2)",
+          borderRadius: "10px",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(5px)",
+          WebkitBackdropFilter: "blur(5px)",
+          border: "1px solid rgba(255, 255, 255, 0.3)",
+        }}
+      >
+        <GridFactory content={content} />
+      </Box>
       <Toolbar />
     </Container>
   );
@@ -29,9 +76,9 @@ export default function Eprojects({ content, title }) {
 
 const GridFactory = ({ content }) => {
   return (
-    <Grid container spacing={4}>
+    <Grid container spacing={4} rowSpacing={8}>
       {content.map((e, index) => (
-        <Grid item xs={12} md={6} lg={4} key={index}>
+        <Grid item xs={12} md={6} lg={4} key={index} data-aos="zoom-in-right">
           <Pcard content={e} />
         </Grid>
       ))}
@@ -47,7 +94,16 @@ const Pcard = ({ content }) => {
     window.open(link, "_blank");
   };
   return (
-    <Box sx={{ position: "relative", width: "100%", height: "100%" }}>
+    <Box
+      sx={{
+        position: "relative",
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <Typography sx={classes.pTitle}>{content.name}</Typography>
       <Box sx={classes.cardRoot}>
         <Img src={content.img} sx={classes.card} />
         {!content.repo ? (
@@ -72,10 +128,18 @@ const Pcard = ({ content }) => {
             </Box>
           </>
         )}
-
-        <EpFrame open={open} handleClose={handleClose} link={content.live} />
+        {content.imgs ? (
+          <ImageHandler
+            open={open}
+            handleClose={handleClose}
+            cards={content.imgs}
+            isMobile={content?.isMobile ?? false}
+          />
+        ) : (
+          <EpFrame open={open} handleClose={handleClose} link={content.live} />
+        )}
       </Box>
-      <Stack
+      {/* <Stack
         direction={"row"}
         sx={{ position: "absolute", top: -10, left: 10 }}
         spacing={1}
@@ -83,7 +147,7 @@ const Pcard = ({ content }) => {
         {content?.lang?.map((e, index) => (
           <Img src={e} key={index} sx={classes.lang} />
         ))}
-      </Stack>
+      </Stack> */}
     </Box>
   );
 };
@@ -148,6 +212,16 @@ const classes = {
     textAlign: "center",
     mb: 5,
   },
+  pTitle: {
+    fontFamily: "'Signika', sans-serif",
+    fontSize: "14px",
+    fontWeight: 400,
+    color: "secondary.main",
+    letterSpacing: 2,
+    textTransform: "capitalize",
+    textAlign: "center",
+    mb: 2,
+  },
   logo: {
     width: "80px",
     height: "auto",
@@ -157,7 +231,8 @@ const classes = {
   eprojects: {
     position: "absolute",
     width: "40vh",
-    right: "5%",
+    left: 0,
+    top: -120,
     // zIndex: -1,
     display: { xs: "none", md: "flex" },
   },
@@ -168,8 +243,8 @@ const classes = {
     borderRadius: "12px",
     overflow: "hidden",
     display: "flex",
-    mb: "50px",
-    m: 2,
+    // mb: "50px",
+    // m: 2,
     boxShadow: "rgb(38, 57, 77) 0px 20px 30px -10px",
     // box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
     // box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;

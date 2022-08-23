@@ -1,9 +1,8 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Box } from "@mui/system";
-import React, { createContext, useState, Suspense, lazy } from "react";
+import React, { createContext, lazy, Suspense, useState } from "react";
 import Lottie from "react-lottie";
 import * as animation from "../assets/animations/loading.json";
-import Ball3d from "./Ball3d";
 export const AppContext = createContext();
 const InnerMain = lazy(() => import("./InnerMain"));
 export default function Main() {
