@@ -1,32 +1,19 @@
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import {
-  Physics,
-  usePlane,
-  useBox,
-  useSphere,
-  useConeTwistConstraint,
-  useDistanceConstraint,
-  useLockConstraint,
-  useHingeConstraint,
-  useSpring,
-  usePointToPointConstraint,
+  useBox, useConeTwistConstraint, useLockConstraint, usePlane, useSphere
 } from "@react-three/cannon";
+import { Canvas, useFrame } from "@react-three/fiber";
 // import font from "../../assets/fonts/Overpass-Black.ttf";
 import Myfont from "../../assets/fonts/OverpassJson.json";
 
 import { extend } from "@react-three/fiber";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
 
-import * as THREE from "three";
 import {
   Environment,
-  MeshDistortMaterial,
-  OrbitControls,
-  PerspectiveCamera,
-  Sphere,
-  Text,
+  MeshDistortMaterial
 } from "@react-three/drei";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import * as THREE from "three";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
 import { Model } from "../Model";
 
@@ -189,51 +176,7 @@ export const Marbel = (props) => {
   );
 };
 
-const TextHanadler = ({ langsState, cube }) => {
-  extend({ TextGeometry });
-  const font = new FontLoader().parse(Myfont);
 
-  return (
-    <mesh
-      position={[-0.35, 0, 0]}
-      scale={0.02}
-      rotation={[0, 0, 0]}
-      castShadow
-      ref={cube}
-    >
-      <textGeometry
-        args={[balls[langsState].label, { font, size: 10, height: 2.5 }]}
-        textAlign="center"
-        {...fontProps}
-      />
-
-      <meshPhysicalMaterial
-        transmission={0}
-        roughness={1}
-        thickness={1}
-        color={balls[langsState].textData.color}
-      />
-    </mesh>
-  );
-};
-
-const InnerBall = (props) => {
-  return (
-    <mesh castShadow ref={props.innerBallRef} scale={1}>
-      <sphereBufferGeometry
-        attach={"geometry"}
-        args={[0.2, 32, 32]}
-      ></sphereBufferGeometry>
-      <MeshDistortMaterial
-        color={"black"}
-        transmission={0}
-        distort={0.3}
-        roughness={0.9}
-        thickness={1}
-      />
-    </mesh>
-  );
-};
 
 export default function Scene3d() {
   return (

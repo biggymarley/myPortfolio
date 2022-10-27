@@ -1,9 +1,7 @@
-import UseStyles, { primary } from "./contactStyle";
-import { Box, Grid } from "@mui/material";
-import { Typography } from "@mui/material";
-import { Social } from "./social";
-import { Contactinfo } from "./contactinfo";
+import { Box, Grid, Typography } from "@mui/material";
 import Scene3d from "../../3dContent/Scene";
+import { Contactinfo } from "./contactinfo";
+import { primary } from "./contactStyle";
 // import round from "../../../imgs/circle.svg";
 // import round2 from "./imgs/circle2.svg";
 

@@ -1,10 +1,8 @@
-import UseStyles, { primary } from "./contactStyle";
-import { Grid } from "@mui/material";
-import CallIcon from "@mui/icons-material/Call";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import EmailIcon from "@mui/icons-material/Email";
-import { Typography } from "@mui/material";
 import { GitHub, LinkedIn } from "@mui/icons-material";
+import CallIcon from "@mui/icons-material/Call";
+import EmailIcon from "@mui/icons-material/Email";
+import { Grid, Typography } from "@mui/material";
+import { primary } from "./contactStyle";
 
 export const Contactinfo = () => {
   // const classes = UseStyles();

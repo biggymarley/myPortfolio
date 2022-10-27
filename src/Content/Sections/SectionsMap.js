@@ -72,6 +72,7 @@ import slanding from "../../assets/imgs/slanding.png";
 import startincuib from "../../assets/imgs/startincuib.png";
 import terminal from "../../assets/imgs/terminal.png";
 import velcom from "../../assets/imgs/velcom.png";
+import bikeapp from "../../assets/imgs/bikeapp.png";
 import Education from "./Education";
 import Eprojects from "./Eprojects";
 import Home from "./Home";
@@ -83,6 +84,13 @@ export default function SectionsMap() {
 
 const imgs = [s12, s11, s10, s9, s8, s7, s6, s5, s4, s3, s2, s1];
 const content = [
+  {
+    name: "Bike Rental App",
+    repo: "https://github.com/biggymarley/Bike-Rental-App",
+    live: "bikerental.vercel.app",
+    img: bikeapp,
+    lang: [html, css, php, js],
+  },
   {
     name: "Instagram like App",
     repo: "https://github.com/biggymarley/Camagru",

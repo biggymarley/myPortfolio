@@ -1,10 +1,9 @@
-import TwitterIcon from "@mui/icons-material/Twitter";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import { IconButton } from "@mui/material";
-import UseStyles, { primary } from "./contactStyle";
-import { Grid } from "@mui/material";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import { Grid, IconButton } from "@mui/material";
+import { primary } from "./contactStyle";
 
 export const Social = () => {
   // const classes = UseStyles();

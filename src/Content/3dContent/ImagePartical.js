@@ -61,8 +61,8 @@ const HandleClick = () => {
         width={500}
         height={500}
         scale={scale}
-        entropy={5}
-        maxParticles={9000}
+        entropy={10}
+        maxParticles={20000}
         particleOptions={particleOptions}
         mouseMoveForce={motionForce}
         touchMoveForce={motionForce}

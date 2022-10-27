@@ -1,13 +1,9 @@
-import { Grid } from "@mui/material";
-import { TextField } from "@mui/material";
-import UseStyles from "./contactStyle";
-import { withStyles } from "@mui/styles";
+import { Grid, TextField } from "@mui/material";
 // import round from "../../../imgs/circle3.svg";
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
-import { ThemeProvider, createTheme } from "@mui/material";
-import { useState } from "react";
+import { createTheme, ThemeProvider } from "@mui/material";
 
 const theme = createTheme({
   palette: {
