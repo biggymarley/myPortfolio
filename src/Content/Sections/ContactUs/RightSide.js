@@ -8,7 +8,7 @@ import { createTheme, ThemeProvider } from "@mui/material";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#FF4E00",
+      main: "#7FBB5C",
     },
     blue: {
       main: "#0097FE",
@@ -88,7 +88,6 @@ export const RightSide = () => {
 const classes = {
   col2: {
     background: "rgba(255, 255, 255, 0.2)",
-    borderRadius: "10px",
     boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
     backdropFilter: "blur(5px)",
     WebkitBackdropFilter: "blur(5px)",

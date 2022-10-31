@@ -1,3 +1,5 @@
+import BlurOffIcon from "@mui/icons-material/BlurOff";
+import BlurOnIcon from "@mui/icons-material/BlurOn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import {
   Button,
@@ -12,15 +14,13 @@ import React, { useState } from "react";
 import realMe from "../../assets/imgs/me.png";
 import BiggyImage from "../3dContent/ImagePartical";
 import { Img } from "../Header";
-import BlurOffIcon from "@mui/icons-material/BlurOff";
-import BlurOnIcon from "@mui/icons-material/BlurOn";
 export default function Home() {
   const [show, setshow] = useState(true);
   return (
     <Container
       id="Home"
       sx={{
-        height: "99vh",
+        // height: "99vh",
         display: "flex",
         position: "relative",
         flexDirection: "column",
@@ -30,23 +30,9 @@ export default function Home() {
     >
       <Toolbar />
       <Toolbar />
-      {/* <Box
-        sx={{
-          position: "absolute",
-          width: "100%",
-          height: "100vh",
-          // top: 0,
-          cursor: "pointer",
-          bottom: "-40%",
-          left: "-55%",
-        }}
-      >
-        <Scene3d />
-      </Box> */}
-
       <Grid container sx={{ flexGrow: 1 }} spacing={4}>
         <Grid
-        data-aos="fade-right"
+          data-aos="fade-right"
           item
           xs={12}
           md={6}
@@ -109,26 +95,25 @@ export default function Home() {
         </Grid>
         <Grid
           item
-          xs={false}
+          xs={12}
           md={6}
           sx={{
             position: "relative",
             justifyContent: "center",
-            display: { xs: "none", md: "flex" },
+            alignItems:"center",
             flexDirection: "column",
           }}
         >
           <IconButton
             onClick={() => setshow(!show)}
-            color='primary'
+            color="primary"
             sx={{ position: "absolute", zIndex: 999, top: 0, right: 0 }}
           >
-          {show ? (
-            <BlurOffIcon  sx={{ fontSize: "2rem" }} />
-          ) : (
-            <BlurOnIcon  sx={{ fontSize: "2rem" }} />
-          )}
-            
+            {show ? (
+              <BlurOffIcon sx={{ fontSize: "2rem" }} />
+            ) : (
+              <BlurOnIcon sx={{ fontSize: "2rem" }} />
+            )}
           </IconButton>
           <Box
             sx={{

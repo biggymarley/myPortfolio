@@ -6,7 +6,7 @@ import ofppt from "../../assets/imgs/ofppt.png";
 import { Img } from "../Header";
 
 const Line = styled("div")(
-  "height: 100px; width: 2px; background:#FF4E00; border-radius:12em;"
+  "height: auto; width: 2px; background:#7FBB5C; border-radius:12em;"
 );
 
 export default function Education() {
@@ -32,7 +32,8 @@ export default function Education() {
         <Stack
           direction={"row"}
           spacing={2}
-          sx={{ mb: 3 }}
+          sx={{ mb: 3,
+           }}
           alignItems="center"
           justifyContent={"center"}
           data-aos="fade-up"
@@ -65,7 +66,7 @@ const RoadMaker = ({ content, index }) => {
     <Stack
       data-aos-duration={index * 1000}
       data-aos="fade-up"
-      direction={"row"}
+      direction={{ xs: "column", md: "row" }}
       spacing={2}
       sx={{
         p: 2,
@@ -76,24 +77,44 @@ const RoadMaker = ({ content, index }) => {
         backdropFilter: "blur(5px)",
         WebkitBackdropFilter: "blur(5px)",
         border: "1px solid rgba(255, 255, 255, 0.3)",
-       
+        
       }}
     >
-      <Stack justifyContent={"space-between"}>
-        <Typography sx={{ ...classes.date }}>{content.date}</Typography>
+      <Stack
+        justifyContent={"space-between"}
+        direction={{ xs: "row", md: "column" }}
+        sx={{ display: { xs: "none", md: "flex" } }}
+      >
+        <Typography sx={{ ...classes.date ,fontWeight: 300, }}>{content.date}</Typography>
         {content.present ? (
           <Typography
-            sx={{ ...classes.date, ...(!content.isPresent && { opacity: 0 }) }}
+            sx={{ ...classes.date, ...(!content.isPresent && { opacity: 0 }) ,fontWeight: 300, }}
           >
             {content.present}
           </Typography>
         ) : null}
       </Stack>
       <Line />
+      
       <Stack maxWidth={"md"}>
         <Typography sx={{ ...classes.date }}>{content.name}</Typography>
+        <Stack
+        justifyContent={"space-between"}
+        direction={{ xs: "row", md: "column" }}
+        sx={{ display: { xs: "flex", md: "none" } }}
+      >
+        <Typography sx={{ ...classes.date, fontWeight: 300,}}>{content.date}</Typography>
+        {content.present ? (
+          <Typography
+            sx={{ ...classes.date, ...(!content.isPresent && { opacity: 0 }) , fontWeight: 300,}}
+          >
+            {content.present}
+          </Typography>
+        ) : null}
+      </Stack>
         <Typography sx={classes.desc}>{content.desc}</Typography>
       </Stack>
+
       {content.logo ? (
         <a
           href={content.link}
@@ -104,6 +125,7 @@ const RoadMaker = ({ content, index }) => {
           <Img src={content.logo} sx={classes.logo} rel="noreferrer" />
         </a>
       ) : null}
+       
     </Stack>
   );
 };

@@ -35,7 +35,7 @@ body {
   position: absolute;
   will-change: transform;
   border-radius: 50%;
-  background: #FF4E00;
+  background: #7FBB5C;
   box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
   opacity: 0.6;
 }

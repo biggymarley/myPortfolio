@@ -10,7 +10,8 @@ export default function Main() {
   const theme = createTheme({
     palette: {
       primary: {
-        main: "#FF4E00",
+        main: "#7FBB5C",
+        contrastText:"white"
       },
       blue: {
         main: "#0097FE",

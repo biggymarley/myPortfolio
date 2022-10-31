@@ -73,6 +73,8 @@ import startincuib from "../../assets/imgs/startincuib.png";
 import terminal from "../../assets/imgs/terminal.png";
 import velcom from "../../assets/imgs/velcom.png";
 import bikeapp from "../../assets/imgs/bikeapp.png";
+import matcha from "../../assets/imgs/matcha.png";
+
 import Education from "./Education";
 import Eprojects from "./Eprojects";
 import Home from "./Home";
@@ -89,6 +91,13 @@ const content = [
     repo: "https://github.com/biggymarley/Bike-Rental-App",
     live: "bikerental.vercel.app",
     img: bikeapp,
+    lang: [html, css, php, js],
+  },
+  {
+    name: "Tinder like App",
+    repo: "https://github.com/biggymarley/TinderClone",
+    live: "https://biggymarley.github.io/TinderClone/",
+    img: matcha,
     lang: [html, css, php, js],
   },
   {
