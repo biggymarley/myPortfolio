@@ -89,7 +89,7 @@ const content = [
   {
     name: "Bike Rental App",
     repo: "https://github.com/biggymarley/Bike-Rental-App",
-    live: "bikerental.vercel.app",
+    live: "https://bikerental.vercel.app/",
     img: bikeapp,
     lang: [html, css, php, js],
   },
